@@ -1,0 +1,175 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode											% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+%SetFonts
+
+%SetFonts
+
+
+\title{Risk and Portfolio Management with Econometrics}
+\title{Homework 1}
+\author{Yunlin Zhang UID: 17583629}
+\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+$X\ \sim\ \mathcal{N}(5,4)\ \Rightarrow f_X (x) = \frac{1}{4\sqrt{2\pi}}  exp [{\frac{-(x-5)^2}{16}}]$\\
+
+i. $P[X\leq6]=\int_{-\infty}^{6}f_X (x)dx$\\
+\indent\indent$\approx$\\
+
+ii. $P[X>4]=\int_{4}^{\infty}f_X (x)dx$\\
+\indent\indent$\approx$\\
+
+iii. $P[|X-5|>1]=\int_{|x-5|>1}f_X (x)dx=\int_{x-5>1} f_X (x)dx + \int_{x-5<-1} f_X (x)dx$\\
+\indent\indent$= \int_{x>6} f_X (x)dx + \int_{x<4} f_X (x)dx$\\
+\indent\indent$= \int_{6}^{\infty} f_X (x)dx + \int_{-\infty}^{4} f_X (x)dx$\\
+\indent\indent$=(1-P[X<6])\ + \ (1-P[X>4])$\\
+\indent\indent$\approx $\\
+
+\section{Problem 2}
+$n\ = \ 10,\ p=q=\frac{1}{2}$\\
+
+i. $P[$beat market all 10 years$]= p^{n} = (\frac{1}{2})^{10}=\frac{1}{1024} \approx 0.977\%$\\
+
+ii. $P[$at least 1 beats market all 10 years$]=1-P[$no one beat market all 10 years$]$\\
+\indent$=1-((_{\ \ 0}^{4170})(0.977\%)^0 (1-0.977\%)^{4170})$\\
+\indent$\approx1-0=1$\\
+Out of 4170 funds it is virtually guaranteed that at least one will beat the market all 10 years.\\
+
+iii. $P[$at least 5 funds beats market all 10 years$]=\sum_{i=5}^{4170} (_i ^{4170})(0.977\%)^i (1-0.977\%)^{4170-i}$\\
+\indent$\approx$\\
+
+\section{Problem 3}
+$Y_i$ are i.i.d, $E[Y_i]=\mu$, $Var[Y_i]=\sigma^{2}$ and $\overline{Y}=\frac{1}{4}\sum_{i=1}^{4}Y_i$\\
+
+i. Calculate $E[\overline{Y}]$ and $Var[\overline{Y}]$\\
+\indent$E[\overline{Y}]=E[\frac{1}{4}\sum_{i=1}^{4}Y_i]=\frac{1}{4}\sum_{i=1}^{4}E[Y_i]=\frac{1}{4}(4\mu)$\\
+\indent\indent$=\mu$\\
+\indent$Var[\overline{Y}]=Var[\frac{1}{4}\sum_{i=1}^{4}Y_i]=(\frac{1}{4})^{2}\sum_{i=1}^{4}Var[Y_i]$\hfill$\because\  Y_i$ are i.i.d\\
+\indent\indent$=\frac{1}{16}(4\sigma^{2})=\frac{1}{4}\sigma^{2}$\\
+
+ii. $W=\frac{1}{8}Y_1+\frac{1}{8}Y_2+\frac{1}{4}Y_3+\frac{1}{2}Y_4$ calculate $E[W]$ and $Var[W]$\\
+$E[W]=E[\frac{1}{8}Y_1+\frac{1}{8}Y_2+\frac{1}{4}Y_3+\frac{1}{2}Y_4]=\frac{1}{8}E[Y_1]+\frac{1}{8}E[Y_2]+\frac{1}{4}E[Y_3]+\frac{1}{2}E[Y_4]$\\
+\indent$=\frac{1}{8}\mu+\frac{1}{8}\mu+\frac{1}{4}\mu+\frac{1}{2}\mu$\\
+\indent$=\mu\ \ \Rightarrow \ \ $W is an unbiased estimator of $\mu$
+$Var[W]=Var[\frac{1}{8}Y_1+\frac{1}{8}Y_2+\frac{1}{4}Y_3+\frac{1}{2}Y_4]$\\
+\indent$=(\frac{1}{8})^{2}Var[Y_1]+(\frac{1}{8})^{2}Var[Y_2]+(\frac{1}{4})^{2}Var[Y_3]+(\frac{1}{2})^{2}Var[Y_4]\hfill\because\ \ Y_i$ are i.i.d
+\indent$=(\frac{1}{8})^{2}\sigma^{2}+(\frac{1}{8})^{2}\sigma^{2}+(\frac{1}{4})^{2}\sigma^{2}+(\frac{1}{2})^{2}\sigma^{2}$\\
+\indent$=\frac{11}{32}\sigma^{2}>\frac{1}{4}\sigma^{2}$\\
+
+iii. $\overline{Y}$ would be a better estimator of $\mu$ since its variance is less than that of $W$
+
+\section{Problem 4}
+Consider $Y_i$, $1\leq i \leq n$, and $E[Y_i]=\mu$, $Var[Y_i]=\sigma^{2}$, and $Cov[Y_i,Y_j]=0$ for $i\neq j$\\
+
+i. Define $W_a=\sum_{i=1}^{n} a_i Y_i$ \\
+$\Rightarrow E[W]=E[\sum_{i=1}^{n} a_i Y_i]=\sum_{i=1}^{n}E[a_i Y_i]=\sum_{i=1}^{n}a_i E[Y_i]$\\
+\indent$=\sum_{i=1}^{n}a_i \mu=\mu\sum_{i=1}^{n}a_i$\\
+\indent W is an unbiased estimator of $\mu \iff E[W]=\mu\Rightarrow \mu\sum_{i=1}^{n}a_i=\mu$\\
+\indent$\Rightarrow \sum_{i=1}^{n}a_i = 1$ and $\mu\neq 0$\\
+
+ii. Find $Var[W]$\\
+$Var[W]=Var[\sum_{i=1}^{n} a_i Y_i]=\sum_{i=1}^{n}Var[a_i Y_i]\hfill\because Cov[Y_i,Y_j]=0$ for $i\neq j$\\
+\indent$=\sum_{i=1}^n a_i^2 Var[Y_i]=\sum_{i=1}^n a_i^2\sigma^2$\\
+\indent$=\sigma^2 \sum_{i=1}^n a_i^2$\\
+
+iii. Give $\frac{1}{n}(\sum_i a_i)^2 \leq \sum_i a_i^2$ show $\forall a\ s.t\ E[W]=\mu\ ,\ Var[W_a]\geq Var[\overline{Y}]\ \ $\\
+\indent$Var[W_a]=\sigma^2 \sum_{i=1}^n a_i^2 \geq \frac{(\sum_{i=1}^{n}a_i)^2}{n}\sigma^2=\frac{1}{n}\sigma^2$\\
+\indent$Var[\overline{Y}]=Var[\frac{1}{n}\sum_{i=1}^n Y_i] = \frac{1}{n^2} \sum_{i=1}^{n}Var[Y_i]=\frac{1}{n^2} n\sigma^2=\frac{1}{n}\sigma^2$\\
+$\Rightarrow\ Var[W_a] \geq Var[\overline{Y}]$\\
+
+\section{Problem 5}
+Let $\overline{Y}=\frac{1}{n}\sum_i X_i$ where $E[X_i]=\mu$ and $Var[X_i]=\sigma^2$\\
+Consider:\\
+\indent$W_1=[\frac{n-1}{n}]\overline{Y}$\\
+\indent$W_2=\frac{\overline{Y}}{2}$\\
+
+i. Show $W_1$ and $W_2$ are both biased estimators, and take limit $n \rightarrow \infty$\\
+$E[W_1]=E[[\frac{n-1}{n}]\overline{Y}]=[\frac{n-1}{n}]E[\overline{Y}]$\\
+\indent$=[\frac{n-1}{n}]\mu$\\
+\indent$\Rightarrow\mu-E[W_1]=\frac{1}{n}\mu$\\
+\indent$\Rightarrow \lim_{n \rightarrow \infty} (\mu - E[W_1])= 0$\\
+\indent$W_1$ approaches an unbiased estimator of $\mu$ as the sample size becomes large\\
+$E[W_2]=E[\frac{\overline{Y}}{2}]=\frac{E[\overline{Y}]}{2}$\\
+\indent$=\frac{\mu}{2}$\\
+\indent$\Rightarrow \mu-E[W_2]=\frac{1}{2} \mu$\\
+\indent$\Rightarrow \lim_{n \rightarrow \infty} (\mu-E[W_2])=\frac{\mu}{2}$\\
+As sample size gets large, $W_2$ remains a biased estimator of $\mu$ with constant bias\\
+
+ii. Find probability limits of $W_1$ and $W_2$\\
+$plim_{n\rightarrow \infty}W_1=\lim_{n\rightarrow\infty}E[W_1]=\lim_{n\rightarrow\infty}[\frac{n-1}{n}]\mu$\\
+\indent$=\mu$\\
+$plim_{n\rightarrow \infty}W_2=\lim_{n\rightarrow\infty}E[W_2]=\lim_{n\rightarrow\infty}\frac{\mu}{2}$\\
+\indent$=\frac{\mu}{2}$\\
+\indent$\Rightarrow W_1$ is a consistent estimator of $\mu$\\
+
+iii. Find $Var[W_1]$ and $Var[W_2]$\\
+$Var[W_1]=Var[[\frac{n-1}{n}]\overline{Y}]=[\frac{n-1}{n}]^2Var[\overline{Y}]$\\
+\indent$=[\frac{n-1}{n}]^2\frac{\sigma^2}{n}$\\
+$Var[W_2]=Var[\frac{\overline{Y}}{2}]$\\
+\indent$=\frac{1}{4}\frac{\sigma^2}{n}$\\
+
+iv. Consider when $\mu$ is close to 0\\
+\indent$\lim_{\mu\rightarrow 0}E[W_1]=0=\lim_{\mu\rightarrow 0} E[\overline{Y}]$\\
+\indent$Var[W_1]=[\frac{n-1}{n}]^2\frac{\sigma^2}{n}=[\frac{n-1}{n}]^2 Var[\overline{Y}]<Var[\overline{Y}]$\\
+$\Rightarrow$ For finite number of samples, as $\mu$ approaches 0, the expected values of $W_1$ and $\overline{Y}$ both approach 0, but the variance of $W_1$ is bounded above by variance of $\overline{Y}$. Therefore $W_1$ is a better estimator of $\mu$ than $\overline{Y}$
+
+\section{Problem 6}
+$X,Y>0$ and $E[Y|X]=\theta X$\\
+
+i. Define $Z=\frac{Y}{X}$, show $E[Z]=\theta$\\
+Let $a(X)=\frac{1}{X}$ and $b(X)=0$, by property (1) $\Rightarrow E[Z|X]=E[\frac{Y}{X}|X]=\frac{1}{X}E[Y|X]$\\
+\indent$=\frac{1}{X} \theta X=\theta$\\
+\indent By property (2) $\Rightarrow E[Z]=E[E[Z|X]]=E[\theta]=\theta$\\
+
+ii. Define $W_1=\frac{1}{n}\sum_{i=1}^{n}\frac{Y_i}{X_i}$, show $W_1$ is unbiased for $\theta$\\
+$E[W_1]=E[\frac{1}{n}\sum_{i=1}^{n}\frac{Y_i}{X_i}]=\frac{1}{n}\sum_{i=1}^{n}E[\frac{Y_i}{X_i}]$\\
+\indent$=\frac{1}{n}\sum_{i=1}^{n}\theta$\hfil$\because$ (i)\\
+\indent$=\theta\ \ \Rightarrow\ \ W_1$ is an unbiased estimator of $\theta$\\
+
+iii.Define $W_2=\frac{\overline{Y}}{\overline{X}}$, show $W_2 \neq W_1$ but $W_2$ is an unbiased estimator of $\theta$\\
+$W_2=\frac{\frac{1}{n}\sum_i Y_i}{\frac{1}{n}\sum_i X_i}=\frac{\sum_i Y_i}{\sum_i X_i}\neq W_1$\\
+
+
+\section{Problem 7}
+Consider $Y$, a Bernoulli random variable $0<\theta<1$, let $\gamma=\frac{\theta}{1-\theta}$
+For $\{Y_i | 1\leq i \leq n\}$, define $G=\frac{\overline{Y}}{1-\overline{Y}}$\\
+
+i. Why is G not an unbiased estimator of $\gamma$\\
+$E[\gamma-G]=E[\frac{\theta}{1-\theta}-\frac{\overline{Y}}{1-\overline{Y}}]=E[\frac{\theta(1-\overline{Y})-\overline{Y}(1-\theta)}{(1-\theta)(1-\overline{Y})}]$\\
+\indent$=E[\frac{\theta-\overline{Y}}{(1-\theta)(1-\overline{Y})}]$\hfill(a)\\
+\indent$=E[\frac{\theta}{(1-\theta)(1-\overline{Y})}]-E[\frac{\overline{Y}}{(1-\theta)(1-\overline{Y})}]$\hfill(b)\\
+$\Rightarrow \lim_{\theta\rightarrow 0+}E[\gamma-G]=E[\frac{\overline{Y}}{1-\overline{Y}}]>0$\\
+and \indent$\lim_{\theta\rightarrow 1-}E[\gamma-G]=\infty>0$\\
+\indent$\Rightarrow$ $G$ is not an unbiased estimator of $\gamma$\\
+
+ii. Show that $G$ is a consistent estimator of $\gamma$\\
+Let $X_n=\overline{Y}_n=\frac{1}{n}\sum_i Y_i\ \ \Rightarrow plim(X_n)=\theta$\\
+Let $Z_n=1-\overline{Y}_n=1-\frac{1}{n}\sum_i Y_i\ \ \Rightarrow plim(Z_n)=1-\theta$\\
+\indent$\because plim(X_n)=\alpha$ and $plim(Z_n)=\beta\ \ \Rightarrow\ \ plim(\frac{X_n}{Z_n})=\frac{\alpha}{\beta}$\\
+\indent$\Rightarrow plim(G)=\frac{\theta}{1-\theta}$\\
+\indent$\Rightarrow\ \ $G is a consistent estimator of $\gamma$\\
+
+\section{Problem 8}
+Consider the survey as a Bernoulli trial with $p=0.65,\ q=0.35,\ n=200$\\
+
+i. Find $E[X]$\\
+$E[X]=np=130$\\
+
+ii. Find $\sigma[X]$\\
+$\sigma[X]=\sqrt{npq}=6.75$\\
+
+iii. Only 115 people of the sample voted yes\\
+$\frac{130-115}{6.75}=2.22$\\ The number of people who voted in the sampled population is about 2.22 standard deviations below expected$\Rightarrow P[X\leq 115]=\int_{-\infty}^{-2.22}N(0,1)dx$\\
+
+%\subsection{}
+
+
+\end{document}  
