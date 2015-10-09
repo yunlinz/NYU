@@ -83,23 +83,39 @@ This implied:
 \section{Problem 4}
 $\log{wage}=\beta_0+\beta_1educ+\beta_2exper+\beta_3tenure+u$\\
 \subsection{}
-i. Another year of general work experience has as much effect on $\log{wage}$ as another year of tenure with current employer\\
+Another year of general work experience has as much effect on $\log{wage}$ as another year of tenure with current employer\\
 \indent$H_0: \hat{\beta_2}=\hat{\beta_3}$\\
 \indent However, this can also be written as:\\
 \indent$H_0: \theta=\hat{\beta_2}-\hat{\beta_3}=0$\\
 \indent And the model equation will be transformed to:\\
 \indent$\log(wage)=\beta_0+\beta_1educ+\theta exper+\beta_2(exper+tenure)$\\
-ii. Calculating the t-statistic of the regression: \\
-
+\subsection{}
+Calculated t-statistic and p-value for $\theta$: \\
+\indent$t_\theta=0.412$\\
+\indent$p_\theta=0.680$\\
+Based on the t-test, $\theta$ is only non-zero with a 68\% significance. This means that we cannot reject the null hypothesis that $\theta$ is 0, and therefore we cannot reject that the effect of tenure at current position and experience at previous position are the same on current (log)wages.
 
 \section{Problem 5}
 $\log(psoda)=\beta_0+\beta_1prpblck+\beta_2\log(income)+\beta_3prppov+u$\\
-
-
-
-
-
-
+\subsection{}
+Data is cleaned by removing empty entries and 0 entries for income and psoda.
+Calculated t-statistics and p-value for $\beta_1$:\\
+\indent$t_{\beta_1}=2.373$\\
+\indent$p_{\beta_1}=0.018=1.8\%$\\
+Based on the t-test, the null hypothesis would be rejected at 5\% significance level, while it would not be rejected at 1\% significance level.
+\subsection{}
+Calculation is carried out in Excel
+$Corr[\log(income),prppov]=-0.840$\\
+These two variables are pretty highly correlated, which is also visible based on a scatter plot between them.\\
+p-value for prppov = 0.0044\\ and \\
+p-value for log(income) = 4.8e-7\\
+With very high confidence we can reject the null hypothesis, therefore these two variables are significant in the regression model.
+\subsection{}
+p-value for log(hseval) = 2.67e-11\\
+With very high confidence we can reject the null hypothesis, and therefore this parameter is significant.
+\subsection{}
+p-value for log(income) became 0.159\\ and \\
+p-value for prppov became 0.699\\
 
 \section{Problem 6}
 The second model is preferable since it has a higher $\overline{R}^2$ value than that of the other two models. Without
