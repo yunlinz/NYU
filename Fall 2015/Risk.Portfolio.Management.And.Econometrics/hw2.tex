@@ -1,0 +1,107 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{setspace}
+%SetFonts
+
+%SetFonts
+\onehalfspacing 
+
+\title{Brief Article}
+\author{The Author}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+\subsection{}
+For OLS, we can derive the following properties:\\
+$Cov[X,Y]=\hat{\beta_1}/\hat{\beta_1}Cov[X,Y]$\\
+\indent$=Cov[\hat{\beta_1}X,Y]/\hat{beta_1}$\\
+\indent$=Cov[\hat{\beta_1}X+\hat{\beta_0},Y]/\hat{\beta_1}$\\
+\indent$=Cov[\hat{Y},Y]/\hat{\beta_1}$\\
+$\sigma[X]=\hat{\beta_1}/\hat{\beta_1}\sigma[X]$\\
+\indent$=\sigma[\hat{\beta_1}X]/\hat{\beta_1}$\\
+\indent$=\sigma[\hat{\beta_1}X+\hat{\beta_0}]/\hat{\beta_1}$\\
+\indent$=\sigma[\hat{Y}]/\hat{\beta_1}$\\
+$\Rightarrow\rho_{xy}=Cov[X,Y]/\sigma[X]\sigma[Y]=Cov[\hat{Y},Y]/\sigma[\hat{Y}]\sigma[Y]$\\
+\indent$=\sum(\hat{y_i}-\overline{y})(y_i-\overline{y})/\sqrt{\sum(\hat{y_i}-\overline{y})^2}\sqrt{\sum(y_i-\overline{y})^2}$\\
+\indent$=\sum(\hat{y_i}-\overline{y})(y_i-\hat{y_i}+\hat{y_i}-\overline{y})/\sqrt{\sum(\hat{y_i}-\overline{y})^2}\sqrt{\sum(y_i-\overline{y})^2}$\\
+\indent$=\sum[(\hat{y_i}-\overline{y})(y_i-\hat{y_i})+(\hat{y_i}-\overline{y})(\hat{y_i}-\overline{y})]/\sqrt{\sum(\hat{y_i}-\overline{y})^2}\sqrt{\sum(y_i-\overline{y})^2}$\\
+\indent$=\sum[(\hat{y_i}-\overline{y})\hat{u_i}+(\hat{y_i}-\overline{y})^2]/\sqrt{\sum(\hat{y_i}-\overline{y})^2}\sqrt{\sum(y_i-\overline{y})^2}$\\
+\indent$=\sum[(\hat{y_i}-\overline{y})^2]/\sqrt{\sum(\hat{y_i}-\overline{y})^2}\sqrt{\sum(y_i-\overline{y})^2}$\hfill$\because\sum(\hat{y_i}-\overline{y})\hat{u_i}=0$\\
+\indent$=\sqrt{\sum[(\hat{y_i}-\overline{y})^2]}/\sqrt{\sum(y_i-\overline{y})^2}$\\
+\indent$=\sqrt{SSE/SST}$\\
+\indent$=\sqrt{R^2}$\\
+$\Rightarrow\rho_{xy}^2=R^2$ for single variate OLS\\
+
+\subsection{}
+In general, $R^2\neq\rho_{xy}^2$ in the multivariate case. Observe that in the proof for the single variable case, a transformation is made from $X$ to $\hat{Y}$. However, in the multivariable case, the covariance terms would not reduce to 0 after making the transformation, and therefore the two values would not converge.\\
+
+\section{Problem 2}
+\subsection{}
+For a general linear model of the form $y_i=\sum_{j=0}^k\beta_j x_{ij} +u_i$\\
+If MLR.1-MLR.6 are satisfied\\
+\indent $\Rightarrow \hat{\beta_j}\sim \mathcal{N}(\beta_j, \sigma^2/[SST_j(1-R_j^2)])$\\
+\indent For simplicity let $SST'_j=SST_j(1-R_j^2)$\\
+\indent\indent $se[\hat{\beta_j}]=\sqrt{s^2/SST'_j}$\\
+\indent\indent $s^2=\frac{1}{n-k-1}\sum \hat{u}_i^2$\\
+\indent By MLR.6 $\hat{u}\sim\mathcal{N}(0,\sigma^2)\Rightarrow \hat{u}/\sigma\sim\mathcal{N}(0,1)\Rightarrow \sum \hat{u_i}^2\sim\sigma^2\mathcal{X}^2$\\
+\indent$\Rightarrow s^2(n-k-1)/\sigma^2\sim\mathcal{X}^2_{n-k-1}$\\
+$\Rightarrow(\hat{\beta_j}-\beta_j)/se(\hat{\beta_j})=(\hat{\beta_j}-\beta_j)/\sqrt{s^2/SST'_j}$\\
+\indent$=(\hat{\beta_j}-\beta_j)/\sqrt{\sigma^2/SST'_j}/\sqrt{s^2/\sigma^2}$\hfill$\because$ multiplying by 1\\
+\indent$=(\hat{\beta_j}-\beta_j)/\sqrt{\sigma^2/SST'_j}/\sqrt{s^2(n-k-1)/[\sigma^2(n-k-1)]}$\hfill$\because$multiplying by 1\\
+\indent$\sim\mathcal{N}(0,1)/\sqrt{\mathcal{X}^2_{n-k-1}/(n-k-1)}$\\
+\indent$\sim t_{n-k-1}$\\
+
+
+%\indent $\Rightarrow se[\hat{\beta_j}]=\sqrt{\sigma^2/[SST_j(1-R_j^2)]}\sqrt{\mathcal{X}_n^2/(n-k-1)}$\\
+%\indent Let $Z=(\hat{\beta_j}-\beta_j)/\sqrt{\sigma^2/[SST_j(1-R_j^2)]}\sim\mathcal{N}(0,1)$\\
+%\indent $\Rightarrow (\hat{\beta_j}-\beta_j)/se(\hat{\beta_j})=Z/\sqrt{X_n^2/(n-k-1)}\sim t_{n-k-1}$\\
+
+\subsection{}
+Based on results from previous problem, $s^2(df)/\sigma^2\sim\mathcal{X}_{df}^2$\\
+Also in general, $SSR=(df)s^2\sim\sigma^2\mathcal{X}_{df}^2$\\
+Since unrestricted model has $n-k-1$ degrees of freedom$\Rightarrow$ restricted model has $n-k-1-q$ degrees of freedom\\
+This implied:
+\indent $(SSR_{ur}-SSR_r)/q\sim\sigma^2(\mathcal{X}_{n-k-1}^2-\mathcal{X}_{n-k-1-q}^2)/q$\\
+\indent\indent$\sim\sigma^2(\mathcal{X}_q^2/q)$\\
+\indent And\\
+\indent$SSR_{ur}/(n-k-1)\sim\sigma^2\mathcal{X}^2_{n-k-q}$\\
+\indent The $\sigma^2$ in top and bottom will cancel\\
+\indent$\Rightarrow[(SSR_{ur}-SSR_r)/q]/[SSR_{ur}/(n-k-1)]\sim(\mathcal{X}_q^2/q)/(\mathcal{X}_{n-k-1}^2/(n-k-1))$\\
+\indent$\sim F_{q,n-k-1}$\\
+
+\section{Problem 3}
+
+
+\section{Problem 4}
+$\log{wage}=\beta_0+\beta_1educ+\beta_2exper+\beta_3tenure+u$\\
+\subsection{}
+i. Another year of general work experience has as much effect on $\log{wage}$ as another year of tenure with current employer\\
+\indent$H_0: \hat{\beta_2}=\hat{\beta_3}$\\
+\indent However, this can also be written as:\\
+\indent$H_0: \theta=\hat{\beta_2}-\hat{\beta_3}=0$\\
+\indent And the model equation will be transformed to:\\
+\indent$\log(wage)=\beta_0+\beta_1educ+\theta exper+\beta_2(exper+tenure)$\\
+ii. Calculating the t-statistic of the regression: \\
+
+
+\section{Problem 5}
+$\log(psoda)=\beta_0+\beta_1prpblck+\beta_2\log(income)+\beta_3prppov+u$\\
+
+
+
+
+
+
+
+\section{Problem 6}
+The second model is preferable since it has a higher $\overline{R}^2$ value than that of the other two models. Without
+
+\end{document}  

@@ -1,0 +1,108 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+
+\usepackage{setspace}
+%SetFonts
+
+%SetFonts
+\onehalfspacing
+
+\title{Homework 1}
+\author{Yunlin Zhang N17583629}
+\date{2015/10/15}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Problem A. PAC learning}
+\subsection{}
+Consider the following algorithm to learning the tightest interval that contains all the points that are labeled 1, given $m$ total points in the sample:\\
+
+\indent Initiate the min of the interval as max double, and max of the interval as min double
+\indent Iterate through all points, if a point is labeled 1 and less than min or greater than the max, then update the min and max of the interval to the new value
+\indent Return the resulting interval
+
+Total time complexity is $O(m)$ to iterate through all points once. \\
+
+\indent Let this learned interval be $R_S=[a',b']$, whereas the target interval $R=[a,b]$. \\
+\indent $R$ contains all points labeled 1, and $R_S$ is the tightest interval that contains all points labeled 1 $\Rightarrow R_S\subseteq R$ and therefore, it is not possible to have false positives\\
+\indent Defining $Pr[\star]$ the same way as in textbook/class as the probability of drawing randomly from the distribution $D$ and landing in $\star$\\
+\indent For a fixed $\epsilon$, if $Pr[R]<\epsilon \Rightarrow Pr[R_S]\leq Pr[R]<\epsilon$\\
+\indent For the case of $Pr[R]\geq\epsilon$, define 2 intervals $r_1=[a,c]$ and $r_2=[d,b]$ s.t.\\
+\indent\indent$Pr[r_1]=\epsilon /2$ and $Pr[r_2]=\epsilon /2$\\
+\indent Therefore if $R_S$ intersect both $r_1$ and $r_2\Rightarrow\\\Re[R_S]=Pr[R]-Pr[R_S]=Pr[r_1]+Pr[r_2]-Pr[R_S\cap r_1] - Pr[R_S\cap r_2]$\\
+\indent\indent$=Pr[r_1] + Pr[r_2]-Pr[R_S \cap r_1] - Pr[R_S \cap r_2]$\\
+\indent\indent$=\epsilon-Pr[R_S \cap r_1] - Pr[R_S \cap r_2]\leq\epsilon$\\
+\indent$\Rightarrow R_S$ must miss either $r_1$ or $r_2$ if $\Re[R_S]>\epsilon$\\
+\indent$\Rightarrow Pr_{S\sim D^m}[\Re[R_S]>\epsilon]\leq Pr_{S\sim D^m}[\cup_{i=1}^2\{R_S\cap r_i=\emptyset\}]$\\
+\indent\indent$\leq\sum_{i=1}^2 Pr_{S\sim D^m}[\{R_S \cap r_i = \emptyset\}]$\hfill (by union bound)\\
+\indent\indent$\leq 2(1-\epsilon / 2)^m$\hfill (each region has $Pr[r_i]=\epsilon /2)$\\
+\indent\indent$\leq 2 exp(-m\epsilon /2)$\hfill ($(1-x)^y\leq exp(-xy)$)\\
+\indent Setting r.h.s $\leq\delta$ gives\\
+\indent\indent$2exp(-m\epsilon /2)\leq\delta$\\
+\indent\indent$\Rightarrow m\geq (2/\epsilon) \log(2/\delta)$\\
+
+Therefore, $\forall\epsilon>0,\delta>0$, if $m\geq (2/\epsilon)\log(2/\delta)\Rightarrow Pr_{S\sim D^m}[\Re[R_S]>\epsilon]\leq\delta$\\
+And the algorithm of finding the tightest interval that contains all points labeled 1 is PAC learnable with data complexity of $m\geq(2/\epsilon)\log(2/\delta)\sim O((1/\epsilon) \log(1/\delta))$\\
+\subsection{}
+Consider the following algorithm of finding the set of continuous intervals:\\
+
+\indent Initiate current region to 0, initiate previous point to null\\
+\indent Sort all points, and iterate through the sorted list\\
+\indent If the current region is 0, and current point is 1 then set region 1, current point is stored as the min of current interval\\
+\indent If the current region is 1, and current point is 1 then set store current point as previous point\\
+\indent If the current region is 1, and current point is 0, then set previous point as the max of the interval, and reset interval to 0\\
+\indent Return all intervals found this way.
+
+\indent The time complexity is $O(m\log m)$ to sort, and $O(m)$ to iterate, therefore the total time complexity is $O(m\log m)$\\
+
+The proof of PAC learnability of this algorithm will be constructed from the different scenarios:\\
+\indent 1. The two intervals are not disjoint\\
+\indent 2. The two intervals are disjoint\\
+Note that based on the construction of these cases, it is possible to admit false positives in case 2 when the sample does not contain points in between the two target intervals.
+Without loss of generality, let $a<d$\\
+\indent Case 1: $b\geq c$: the regions are not disjoint, and therefore this case reduces to a single interval. The algorithm will also give the tightest region containing all points labeled with 1. Using logic similar to the previous problem, proves that this case is PAC learnable with data complexity of $m\geq(2/\epsilon)\log(2/\delta)\sim O((1/\epsilon) \log(1/\delta))$\\
+\indent Case 2: $b<c$: the regions are disjoint and the algorithm can return the following two outputs depending on the sample\\
+\indent\indent 1. Two tightest intervals is there are points sampled from the interval $(b,c)$\\
+\indent\indent 2. The tightest interval that is the union of the two target intervals and $(b,c)$ if no points are sampled from $(b,c)$\\
+\indent Again, the proof is constructed based on subregions ($r_i$) on the left and right sides of the intervals, but we need to find optimal size for these intervals. \\
+\indent Consider subregion on the left and right of $R_1$ and $R_2$, call them $r_{ij}$ where subscript $i$ corresponds to the region it is a subset of, and subscript $j$ corresponds to $l=left$ or $r=right$. We would like to find a $t$ such that $Pr[r_{ij}]=t\epsilon$ and for $\Re[R_S]>\epsilon$, $R_S$ must either miss at least one of each of these such regions or it contains the false position region between the two target intervals (i.e. none of the sampled points labeled 0 is between the target intervals)\\
+\indent Let the region between the two target intervals be called $R'$, and let $Pr[R']=u\epsilon$ for some yet to be determined $u$\\
+
+
+%\indent First we analyze constrains on the size of $R_1=[a,b]$ and $R_2=[c,d]$. \\
+%\indent Let $Pr[R_1]<t\epsilon$ or $Pr[R_2]<t\epsilon$ and $Pr[R_1]+Pr[R_2]\geq 2t\epsilon$, where $t$ is a yet-to-be-determined variable\\
+
+
+
+
+%WRONG DELETE The two regions are disjoin and there is a point labeled 0 between the two intervals. The analysis for this case will be very similar to the single interval case\\
+%\indent Denoting the two intervals as $R_1$ and $R_2$,the algorithm would again give the tightest interval that contains all points labeled as 1. And therefore $R_1\cup R_2 =R_S\subseteq R$ and if $Pr[R]<\epsilon\Rightarrow Pr[R_S]<\epsilon$\\
+%\indent Now consider subregions in each of the target intervals labeled as $r_{ij}$, where subscript $i$ represents the interval $R_i$ that it is a subset of, and subscript $j$refers to whether it is at the left ($l$) or right ($r$) of the respective intervals. Let us assign to each interval such that $Pr[r_{ij}]=\min(\epsilon/4, Pr[R_i]/2)+[(\epsilon/2-Pr[R_k])/2]_{Pr[R_k]<\epsilon/2}$ such that $\sum r_{ij} =\epsilon$\\
+%\indent The first term of the expression would try to allocation $\epsilon/4$ to each of the regions, but if one of the intervals is less than that, it's probabilistic mass will be distributed to the other one. Notice based on construct, the total probabilty is greater than $\epsilon$ so both of them cannot be smaller than $\epsilon/2$\\
+
+
+\newpage
+\section{Problem B. Rademacher complexity, growth function}
+\subsection{}
+Consider the family of threshold functions $F=\{f:x\mapsto1_{x>\theta}:\theta\in\mathcal{R}\}$\\
+\indent This function will map all $x\leq\theta$ to 0 and all $x>\theta$ to 1\\
+\indent For a set of $m$ points, if $x_i/neq x_j$, $i\neq j$ then there are $m-1$ intervals between consecutive points when sorted, plus the two intervals to the left and right of all sampled points. For all values of $\theta$ in each such interval, the classification would be the same. If there are identical points in the sample, then the possible number of classifications is reduced by the number of such duplicated. \\
+\indent Therefore the maximum number of classification is $m+1$ for $F$\\
+\indent Similarly, for $G=\{g:x\mapsto 1_{x\leq \theta} : \theta\in\mathcal{R}\}$, there are $m-1$ intervals between sampled points if all of them are unique. And for the same value of $\theta$, $g$ would classify the points in the opposite way as $f$. Note, however, that the classification for $\theta$ greater or less than all the points have been already counted.\\
+\indent Therefore there are maximum of $m-1$ classifications for $G$ that are unique from $F$\\
+\indent $\Rightarrow \Pi_H(m)=\Pi_{F\cup G}(m)\leq (m+1) + (m-1) = 2m$\\
+\indent The results defined in class is for hypotheses that map to $\{-1,+1\}$, whereas $H\mapsto\{0,+1\}$. However, note that in Massart's theorem, $R=max_{x\in H} ||x||_2$ is still $\sqrt{m}$\\
+\indent $\Rightarrow \mathcal{R}_m[H]\leq \sqrt{{2\log\Pi_H(m)}/m}\leq \sqrt{{2\log{2m}}/m}$\\
+\subsection{}
+
+
+
+
+\end{document}  

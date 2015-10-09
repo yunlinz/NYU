@@ -6,6 +6,30 @@
 \usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode											% TeX will automatically convert eps --> pdf in pdflatex		
 \usepackage{amssymb}
 \usepackage{mathrsfs}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Matlab,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 %SetFonts
 
 %SetFonts
@@ -19,32 +43,51 @@
 \begin{document}
 \maketitle
 \section{Problem 1}
-$X\ \sim\ \mathcal{N}(5,4)\ \Rightarrow f_X (x) = \frac{1}{4\sqrt{2\pi}}  exp [{\frac{-(x-5)^2}{16}}]$\\
+$X\ \sim\ \mathcal{N}(5,4)\ \Rightarrow \mu=5,\ \sigma^2=4 \Rightarrow \sigma=2$\\
+All numbers based on $\mathcal{N}(0,1)$ lookup table\\
 
-i. $P[X\leq6]=\int_{-\infty}^{6}f_X (x)dx$\\
-\indent\indent$\approx$\\
+i. $P[X\leq6]$\\
+\indent$=P[X\leq \mu + 0.5\sigma]$\\
+\indent$\approx0.6915$\\
 
-ii. $P[X>4]=\int_{4}^{\infty}f_X (x)dx$\\
-\indent\indent$\approx$\\
 
-iii. $P[|X-5|>1]=\int_{|x-5|>1}f_X (x)dx=\int_{x-5>1} f_X (x)dx + \int_{x-5<-1} f_X (x)dx$\\
-\indent\indent$= \int_{x>6} f_X (x)dx + \int_{x<4} f_X (x)dx$\\
-\indent\indent$= \int_{6}^{\infty} f_X (x)dx + \int_{-\infty}^{4} f_X (x)dx$\\
-\indent\indent$=(1-P[X<6])\ + \ (1-P[X>4])$\\
-\indent\indent$\approx $\\
+ii. $P[X>4]$\\
+\indent$=P[X>\mu-0.5\sigma]$\\
+\indent$=P[X< \mu+0.5\sigma]$\\
+\indent$\approx0.6915$\\
+
+iii. $P[|X-5|>1]$\\
+\indent$=P[X-5>1 \lor X-5<-1]$\\
+\indent$=P[X>6 \lor X<4]$\\
+\indent$=P[X>\mu+0.5\sigma]+P[X<\mu-0.5\sigma]$\\
+\indent$=2P[X>\mu+0.5\sigma]$\\
+\indent$=2(1-P[X<\mu+0.5\sigma])$\\
+\indent$\approx0.6171$\\
+
 
 \section{Problem 2}
-$n\ = \ 10,\ p=q=\frac{1}{2}$\\
 
-i. $P[$beat market all 10 years$]= p^{n} = (\frac{1}{2})^{10}=\frac{1}{1024} \approx 0.977\%$\\
+Probability of beating the market each year is 0.5\\
 
-ii. $P[$at least 1 beats market all 10 years$]=1-P[$no one beat market all 10 years$]$\\
-\indent$=1-((_{\ \ 0}^{4170})(0.977\%)^0 (1-0.977\%)^{4170})$\\
-\indent$\approx1-0=1$\\
-Out of 4170 funds it is virtually guaranteed that at least one will beat the market all 10 years.\\
+i. $P[$beat market all 10 years$]= p^{n} = (\frac{1}{2})^{10}=\frac{1}{1024} \approx 0.0977\%$\\
 
-iii. $P[$at least 5 funds beats market all 10 years$]=\sum_{i=5}^{4170} (_i ^{4170})(0.977\%)^i (1-0.977\%)^{4170-i}$\\
-\indent$\approx$\\
+ii. Consider $n=4170$, $p=0.0977\%$, $q=1-0.0977\%=99.9023\%$\\
+\indent$P[$at least 1 beats market all 10 years$]=1-P[$no one beat market all 10 years$]$\\
+\indent$=1-((_{\ \ 0}^{4170})(0.0977\%)^0 (99.9023\%)^{4170})$\\
+\indent$\approx1-0.017=0.983=98.3\%$\\
+Out of 4170 funds it is extremely likely that at least one will beat the market all 10 years.\\
+
+iii. $P[$at least 5 funds beats market all 10 years$]=\sum_{i=5}^{4170} (_i ^{4170})(0.0977\%)^i (99.9023\%)^{4170-i}$\\
+\indent$\approx38.5\%$\\
+
+MATLAB code:
+\begin{lstlisting}
+p = (1/2)^10; q = 1 - p; s = 0; N = 4170;
+for i = 5:N
+	s = s + binopdf(i,N,p);
+end
+\end{lstlisting}
+
 
 \section{Problem 3}
 $Y_i$ are i.i.d, $E[Y_i]=\mu$, $Var[Y_i]=\sigma^{2}$ and $\overline{Y}=\frac{1}{4}\sum_{i=1}^{4}Y_i$\\
@@ -58,13 +101,13 @@ i. Calculate $E[\overline{Y}]$ and $Var[\overline{Y}]$\\
 ii. $W=\frac{1}{8}Y_1+\frac{1}{8}Y_2+\frac{1}{4}Y_3+\frac{1}{2}Y_4$ calculate $E[W]$ and $Var[W]$\\
 $E[W]=E[\frac{1}{8}Y_1+\frac{1}{8}Y_2+\frac{1}{4}Y_3+\frac{1}{2}Y_4]=\frac{1}{8}E[Y_1]+\frac{1}{8}E[Y_2]+\frac{1}{4}E[Y_3]+\frac{1}{2}E[Y_4]$\\
 \indent$=\frac{1}{8}\mu+\frac{1}{8}\mu+\frac{1}{4}\mu+\frac{1}{2}\mu$\\
-\indent$=\mu\ \ \Rightarrow \ \ $W is an unbiased estimator of $\mu$
+\indent$=\mu\ \ \Rightarrow \ \ $W is an unbiased estimator of $\mu$\\
 $Var[W]=Var[\frac{1}{8}Y_1+\frac{1}{8}Y_2+\frac{1}{4}Y_3+\frac{1}{2}Y_4]$\\
 \indent$=(\frac{1}{8})^{2}Var[Y_1]+(\frac{1}{8})^{2}Var[Y_2]+(\frac{1}{4})^{2}Var[Y_3]+(\frac{1}{2})^{2}Var[Y_4]\hfill\because\ \ Y_i$ are i.i.d
 \indent$=(\frac{1}{8})^{2}\sigma^{2}+(\frac{1}{8})^{2}\sigma^{2}+(\frac{1}{4})^{2}\sigma^{2}+(\frac{1}{2})^{2}\sigma^{2}$\\
 \indent$=\frac{11}{32}\sigma^{2}>\frac{1}{4}\sigma^{2}$\\
 
-iii. $\overline{Y}$ would be a better estimator of $\mu$ since its variance is less than that of $W$
+iii. $\overline{Y}$ would be a better estimator of $\mu$ since its variance is less than that of $W$, therefore it is a more efficient estimator\\
 
 \section{Problem 4}
 Consider $Y_i$, $1\leq i \leq n$, and $E[Y_i]=\mu$, $Var[Y_i]=\sigma^{2}$, and $Cov[Y_i,Y_j]=0$ for $i\neq j$\\
@@ -93,22 +136,20 @@ Consider:\\
 
 i. Show $W_1$ and $W_2$ are both biased estimators, and take limit $n \rightarrow \infty$\\
 $E[W_1]=E[[\frac{n-1}{n}]\overline{Y}]=[\frac{n-1}{n}]E[\overline{Y}]$\\
-\indent$=[\frac{n-1}{n}]\mu$\\
+\indent$=[\frac{n-1}{n}]\mu\neq\mu$\\
 \indent$\Rightarrow\mu-E[W_1]=\frac{1}{n}\mu$\\
 \indent$\Rightarrow \lim_{n \rightarrow \infty} (\mu - E[W_1])= 0$\\
 \indent$W_1$ approaches an unbiased estimator of $\mu$ as the sample size becomes large\\
 $E[W_2]=E[\frac{\overline{Y}}{2}]=\frac{E[\overline{Y}]}{2}$\\
-\indent$=\frac{\mu}{2}$\\
+\indent$=\frac{\mu}{2}\neq\mu$\\
 \indent$\Rightarrow \mu-E[W_2]=\frac{1}{2} \mu$\\
 \indent$\Rightarrow \lim_{n \rightarrow \infty} (\mu-E[W_2])=\frac{\mu}{2}$\\
 As sample size gets large, $W_2$ remains a biased estimator of $\mu$ with constant bias\\
 
 ii. Find probability limits of $W_1$ and $W_2$\\
-$plim_{n\rightarrow \infty}W_1=\lim_{n\rightarrow\infty}E[W_1]=\lim_{n\rightarrow\infty}[\frac{n-1}{n}]\mu$\\
-\indent$=\mu$\\
-$plim_{n\rightarrow \infty}W_2=\lim_{n\rightarrow\infty}E[W_2]=\lim_{n\rightarrow\infty}\frac{\mu}{2}$\\
-\indent$=\frac{\mu}{2}$\\
-\indent$\Rightarrow W_1$ is a consistent estimator of $\mu$\\
+plim$_{n\rightarrow\infty}W_1=\lim_{n\rightarrow\infty}E[W_1]=\lim_{n\rightarrow\infty}\frac{n-1}{n}\mu=\mu$\\
+plim$_{n\rightarrow\infty}W_2=\lim_{n\rightarrow\infty}E[W_2]=\frac{\mu}{2}$\\
+\indent$\Rightarrow W_1$ is a consistent estimator of $\mu$, while $W_2$ is not\\
 
 iii. Find $Var[W_1]$ and $Var[W_2]$\\
 $Var[W_1]=Var[[\frac{n-1}{n}]\overline{Y}]=[\frac{n-1}{n}]^2Var[\overline{Y}]$\\
@@ -136,7 +177,9 @@ $E[W_1]=E[\frac{1}{n}\sum_{i=1}^{n}\frac{Y_i}{X_i}]=\frac{1}{n}\sum_{i=1}^{n}E[\
 
 iii.Define $W_2=\frac{\overline{Y}}{\overline{X}}$, show $W_2 \neq W_1$ but $W_2$ is an unbiased estimator of $\theta$\\
 $W_2=\frac{\frac{1}{n}\sum_i Y_i}{\frac{1}{n}\sum_i X_i}=\frac{\sum_i Y_i}{\sum_i X_i}\neq W_1$\\
-
+$E[W_2]=E[\frac{\sum_i Y_i}{\sum_i X_i}]=E[\frac{\sum_i \theta X_i}{\sum_i X_i}]=\theta E[\frac{\sum_i X_i}{\sum_i X_i}]$\\
+\indent$\theta$\\
+\indent$W_2$ is also unbiased estimator of $\theta$\\
 
 \section{Problem 7}
 Consider $Y$, a Bernoulli random variable $0<\theta<1$, let $\gamma=\frac{\theta}{1-\theta}$
@@ -146,8 +189,7 @@ i. Why is G not an unbiased estimator of $\gamma$\\
 $E[\gamma-G]=E[\frac{\theta}{1-\theta}-\frac{\overline{Y}}{1-\overline{Y}}]=E[\frac{\theta(1-\overline{Y})-\overline{Y}(1-\theta)}{(1-\theta)(1-\overline{Y})}]$\\
 \indent$=E[\frac{\theta-\overline{Y}}{(1-\theta)(1-\overline{Y})}]$\hfill(a)\\
 \indent$=E[\frac{\theta}{(1-\theta)(1-\overline{Y})}]-E[\frac{\overline{Y}}{(1-\theta)(1-\overline{Y})}]$\hfill(b)\\
-$\Rightarrow \lim_{\theta\rightarrow 0+}E[\gamma-G]=E[\frac{\overline{Y}}{1-\overline{Y}}]>0$\\
-and \indent$\lim_{\theta\rightarrow 1-}E[\gamma-G]=\infty>0$\\
+$\Rightarrow \lim_{\theta\rightarrow 0+}E[\gamma-G]=E[\frac{\overline{Y}}{1-\overline{Y}}]\geq0$\\
 \indent$\Rightarrow$ $G$ is not an unbiased estimator of $\gamma$\\
 
 ii. Show that $G$ is a consistent estimator of $\gamma$\\
@@ -166,8 +208,11 @@ $E[X]=np=130$\\
 ii. Find $\sigma[X]$\\
 $\sigma[X]=\sqrt{npq}=6.75$\\
 
-iii. Only 115 people of the sample voted yes\\
-$\frac{130-115}{6.75}=2.22$\\ The number of people who voted in the sampled population is about 2.22 standard deviations below expected$\Rightarrow P[X\leq 115]=\int_{-\infty}^{-2.22}N(0,1)dx$\\
+iii. Only 115 people of the sample voted yes out of 200. Since sample count is relatively large, we can approximate the results with a z-test using central limit theorem\\
+$Z=\frac{130-115}{6.75}=2.22$\\ The number of people who voted in the sampled population is about 2.22 standard deviations below expected$\Rightarrow P[X\leq 115]=P[X\leq \mu-2.2\sigma]=1.39\%$\\
+
+iv. Explain results to a layperson\\
+If the initial claims of 65\% support for the dictator were true, then we would expect a sample of the population to reflect the claims. However, based on the survey, the outcome deviates greatly from the expectation. In fact, the likelihood that there are 115 or fewer people supporting the dictator in a sample of 200 is only 1.39\%. Therefore with a very high confidence (98.61\%) we can reject the dictator's claim that the support for his rule is 65\%
 
 %\subsection{}
 
