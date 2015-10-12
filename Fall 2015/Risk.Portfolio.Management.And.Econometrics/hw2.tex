@@ -12,9 +12,9 @@
 %SetFonts
 \onehalfspacing 
 
-\title{Brief Article}
-\author{The Author}
-%\date{}							% Activate to display a given date or no date
+\title{Homework 2}
+\author{Yunlin Zhang}
+\date{2015/10/09}							% Activate to display a given date or no date
 
 \begin{document}
 \maketitle
@@ -69,7 +69,7 @@ Based on results from previous problem, $s^2(df)/\sigma^2\sim\mathcal{X}_{df}^2$
 Also in general, $SSR=(df)s^2\sim\sigma^2\mathcal{X}_{df}^2$\\
 Since unrestricted model has $n-k-1$ degrees of freedom$\Rightarrow$ restricted model has $n-k-1-q$ degrees of freedom\\
 This implied:
-\indent $(SSR_{ur}-SSR_r)/q\sim\sigma^2(\mathcal{X}_{n-k-1}^2-\mathcal{X}_{n-k-1-q}^2)/q$\\
+\indent $({SSR_r}-SSR_{ur})/q\sim\sigma^2(\mathcal{X}_{n-k-1-q}^2-\mathcal{X}_{n-k-1}^2)/q$\\
 \indent\indent$\sim\sigma^2(\mathcal{X}_q^2/q)$\\
 \indent And\\
 \indent$SSR_{ur}/(n-k-1)\sim\sigma^2\mathcal{X}^2_{n-k-q}$\\
@@ -78,7 +78,14 @@ This implied:
 \indent$\sim F_{q,n-k-1}$\\
 
 \section{Problem 3}
-
+$\tilde{\beta_1}=\sum\hat{r}_{i1}y_i/\sum\hat{r}_{i1}^2$
+Plugging in $y_i=\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\beta_3x_{i3}+u_i$\\
+Working with the numerator:\\
+$\sum\hat{r}_{i1}y_i=\sum\hat{r}_{i1}(\beta_0+\beta_1x_{i1}+\beta_2x_{i2}+\beta_3x_{i3}+u_i)$\\
+But $\beta_0+\beta_1x_{i1}+\beta_2x_{i2}=\beta_1\hat{r}_{i1}$\\
+\indent$\Rightarrow \sum\hat{r}_{i1}y_i=\beta_1\sum\hat{r}_{i1}^2 + \beta_3\sum\hat{r}_{i1}x_{i3}$\\
+\indent$\Rightarrow E[\tilde{\beta}_1=E[(\beta_1\sum\hat{r}_{i1}^2 + \beta_3\sum\hat{r}_{i1}x_{i3})/\sum\hat{r}_{i1}^2]$\\
+\indent\indent$=\beta_1 + \beta_3\ \sum\hat{r}_{i1}x_{i3}/\sum\hat{r}_{i1}^2$\\
 
 \section{Problem 4}
 $\log{wage}=\beta_0+\beta_1educ+\beta_2exper+\beta_3tenure+u$\\
@@ -116,8 +123,24 @@ With very high confidence we can reject the null hypothesis, and therefore this 
 \subsection{}
 p-value for log(income) became 0.159\\ and \\
 p-value for prppov became 0.699\\
+Therefore individually, the became non-significant.
+
+For testing join significance:\\
+\indent $H_0:\beta_2=\beta_3=0$\\
+Running F test by restricting these two variables:
+$SSR_r=0.450982$\\
+From part iii,
+$SSR_{ur}=0.0443098$\\
+Running an F-test:
+$q = 2$, $n-k-1=401-4-1=396$\\
+$F=[(SSR_r-SSR_{ur})/q]/[SSR_{ur}/(n-k-1)]=1857$\\
+At 95\% confidence/5\% significance, $F_{2,396}=3$ therefore we reject the null hypothesis, and these variables are significant jointly.
+
+\subsection{}
+Based on the tests in the previous sections, the most reliable model is from part iii, where $\log(psoda)=\beta_0+\beta_1prpblck+\beta_2\log(income)+\beta_3prppov+\beta_4\log(hseval)+u$
+
 
 \section{Problem 6}
-The second model is preferable since it has a higher $\overline{R}^2$ value than that of the other two models. Without
+The second model is preferable since it has a higher $\overline{R}^2$ value than that of the other two models. Without seeing the data, basing just on the three models, it looks like a linear response on totemp is too strong and had to be corrected by a smaller quadratic term, which makes the log model work better in the regime that the sampled data is in.
 
 \end{document}  

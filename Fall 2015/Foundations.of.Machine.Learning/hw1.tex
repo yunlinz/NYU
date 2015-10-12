@@ -23,10 +23,11 @@
 \section{Problem A. PAC learning}
 \subsection{}
 Consider the following algorithm to learning the tightest interval that contains all the points that are labeled 1, given $m$ total points in the sample:\\
-
-\indent Initiate the min of the interval as max double, and max of the interval as min double
-\indent Iterate through all points, if a point is labeled 1 and less than min or greater than the max, then update the min and max of the interval to the new value
-\indent Return the resulting interval
+\indent $min=double.max,\ max=double.min$\\
+\indent foreach $x_i\in X$:\\
+\indent\indent if $y_i = 1 \& x_i>max$ then $max=x_i$\\
+\indent\indent if $y_i = 1 \& x_i<min$ then $min = x_i$\\
+\indent return $[min,max]$\\
 
 Total time complexity is $O(m)$ to iterate through all points once. \\
 
@@ -51,14 +52,17 @@ Total time complexity is $O(m)$ to iterate through all points once. \\
 Therefore, $\forall\epsilon>0,\delta>0$, if $m\geq (2/\epsilon)\log(2/\delta)\Rightarrow Pr_{S\sim D^m}[\Re[R_S]>\epsilon]\leq\delta$\\
 And the algorithm of finding the tightest interval that contains all points labeled 1 is PAC learnable with data complexity of $m\geq(2/\epsilon)\log(2/\delta)\sim O((1/\epsilon) \log(1/\delta))$\\
 \subsection{}
-Consider the following algorithm of finding the set of continuous intervals:\\
-
-\indent Initiate current region to 0, initiate previous point to null\\
-\indent Sort all points, and iterate through the sorted list\\
-\indent If the current region is 0, and current point is 1 then set region 1, current point is stored as the min of current interval\\
-\indent If the current region is 1, and current point is 1 then set store current point as previous point\\
-\indent If the current region is 1, and current point is 0, then set previous point as the max of the interval, and reset interval to 0\\
-\indent Return all intervals found this way.
+Consider the following algorithm of finding the set of continuous intervals by first sorting the points based on x value then iterating through the sorted list to identify intervals:\\
+\indent $curRegion.label=0$, $curRegion.min=nil$, $curRegion.max=nil$, $prevPt = nil$\\ 
+\indent $Z'=sort(\{X,Y\})$ by $x_i$ \#Now $Z'$ is sorted by $x_i\in Z'$\\
+\indent foreach $x_i\in Z'$:\\
+\indent\indent If $curRegion=0\&y_i=1$ then:\\
+\indent\indent\indent $curRegion.label=1$, $curRegion.max=x_i$\\
+\indent\indent if $curRegion=1\&y_i=0$ then:\\
+\indent\indent\indent $curRegion.max=prevPt$, emit $curRegion$\\
+\indent\indent\indent $curRegion.label=0$, $curRegion.min=nil$, $curRegion.max=nil$\\
+\indent\indent $prevPt = x_i$\\
+\indent if $curRegion.label=1$, return $curRegion$\\ 
 
 \indent The time complexity is $O(m\log m)$ to sort, and $O(m)$ to iterate, therefore the total time complexity is $O(m\log m)$\\
 
@@ -71,9 +75,39 @@ Without loss of generality, let $a<d$\\
 \indent Case 2: $b<c$: the regions are disjoint and the algorithm can return the following two outputs depending on the sample\\
 \indent\indent 1. Two tightest intervals is there are points sampled from the interval $(b,c)$\\
 \indent\indent 2. The tightest interval that is the union of the two target intervals and $(b,c)$ if no points are sampled from $(b,c)$\\
-\indent Again, the proof is constructed based on subregions ($r_i$) on the left and right sides of the intervals, but we need to find optimal size for these intervals. \\
-\indent Consider subregion on the left and right of $R_1$ and $R_2$, call them $r_{ij}$ where subscript $i$ corresponds to the region it is a subset of, and subscript $j$ corresponds to $l=left$ or $r=right$. We would like to find a $t$ such that $Pr[r_{ij}]=t\epsilon$ and for $\Re[R_S]>\epsilon$, $R_S$ must either miss at least one of each of these such regions or it contains the false position region between the two target intervals (i.e. none of the sampled points labeled 0 is between the target intervals)\\
-\indent Let the region between the two target intervals be called $R'$, and let $Pr[R']=u\epsilon$ for some yet to be determined $u$\\
+Let $R_1=[a,b]$, $R_2=[c,d]$ and $R_3=(b,c)$ and it is clear that $R_i\cap R_j=\emptyset$, where $i\neq j$\\
+\indent Notice that if $Pr[R_3]=\epsilon'$, then for an i.i.d sampling of m points, the probability of having no points fall into that region is $(1-\epsilon)^m\leq \exp(-m\epsilon)$\\
+\indent Based on construction, $R_S\subseteq R'=(R_1\cup R_2 \cup R_3)$. Furthermore, errors are also subset of $R'$\\
+\indent Therefore, if $Pr[R_1\cup R_2 \cup R_3]=Pr[R_1]+Pr[R_2]+Pr[R_3]\leq\epsilon\Rightarrow\Re[R_S]\leq\epsilon$\hfill(A)\\
+\indent Next, consider if $Pr[R_i]\geq\epsilon/2$ for all of the regions.\\
+\indent Consider subintervals where $Pr[r_k]=\epsilon/4$ bordering either side of and within $R_1$ and $R_2$, there are 4 such regions, and for $\Re[R_S]>\epsilon$, $R_S$ must at least miss one of them or there must be no points sampled in $(b,c)$\\
+\indent $Pr_{S\sim D^m}[\Re[R_S]>\epsilon]\leq Pr_{S\sim D^m}[\cup_{k=1}^4\{R_S\cap r_k=\emptyset\}\bigwedge(S\cap R_3=\emptyset)]$\\
+\indent\indent$\leq\sum_{k=1}^{4} Pr_{S\sim D^m}[\{R_S \cap r_k = \emptyset\}] + \exp(-m\epsilon/2)$\hfill (by union bound)\\
+\indent\indent$\leq4(1-\epsilon/4)^m+\exp(-m\epsilon/2)$\\
+\indent\indent$\leq4\exp(-m\epsilon/4)+\exp(-m\epsilon/2)$\\
+\indent\indent$\leq4\exp(-m\epsilon/4)+\exp(-m\epsilon/4)$\\
+\indent\indent$=5\exp(-m\epsilon/4)$\\
+\indent Setting $r.h.s.\leq\delta\Rightarrow m\geq(4/\epsilon)\log(5/\delta)$\\
+
+Now consider if one of $Pr[R_i]<\epsilon$, let us call this interval $k$. By (A), $\sum Pr[R_i]>\epsilon$ or $Pr[\Re[R_S]>\epsilon]=0$, therefore the probabilistic mass of that interval must be distributed to the other two intervals for the problem to be nontrivial. Now consider the same construction of subintervals on the ends of each target interval, except for the smaller interval $Pr[r]=Pr[R_k]/2$ (this construction is valid for the false positive interval between the two target intervals as we can alter construct of the proof to the scenario where sampled points miss both subintervals), while we distribute the rest of the probabilistic mass $(\epsilon/2-Pr[R_k])$ to the other subintervals as well (B). Same assumption of having to miss one of the subintervals or not sampling an points in the false positive region applies. Therefore, if the smaller region is $R_1$ or $R_2$\\
+\indent $Pr_{S\sim D^m}[\Re[R_S]>\epsilon]\leq Pr_{S\sim D^m}[\cup_{k=1}^4\{R_S\cap r_k=\emptyset\}\bigwedge(S\cap R_3=\emptyset)]$\\
+\indent\indent$\leq2(1-Pr[R_k)/2)^m+2(1-[\epsilon/4+(\epsilon/2-Pr[R_k])/2])+ \exp(-m\epsilon/2)$\\
+\indent\indent$\leq2\exp(-m\ Pr[R_k]/2) + 2\exp(-m[\epsilon/4+(\epsilon/2-Pr[R_k])/2])+\exp(-m\epsilon/2)$\\
+Notice the first 2 terms are of the form $2\exp
+
+
+The same algorithm will generalize to the union of $p$ intervals. Using the same construction as before, there will be $2p$ subintervals at either end of the target regions, each with $Pr[r_l]=\epsilon/2p$ and $p-1$ regions between each with $Pr[R'_n]=\epsilon/p$ (the case where the regions and subintervals are smaller can be treated similarly as the 2 interval case). \\
+\indent Therefore\\
+\indent $Pr_{S\sim D^m}[\Re[R_S]>\epsilon]\leq Pr_{S\sim D^m}[\cup_{l=1}^{2p}\{R_S\cap r_l=\emptyset\}\bigwedge(\exists n, S\cap R'_n=\emptyset)]$\\
+\indent\indent$\leq\sum_{l=1}^{2p} Pr_{S\sim D^m}[\{R_S \cap r_l = \emptyset\}] + (p-1)\exp(-m\epsilon/p)$\\
+\indent\indent$\leq2p(1-\epsilon/2p)^m+(p-1)\exp(-m\epsilon/p)$\\
+\indent\indent$\leq2p\exp(-m\epsilon/2p)+(p-1)\exp(-m\epsilon/p)$\\
+\indent\indent$\leq(3p-1)\exp(-m\epsilon/2p)$\\
+\indent Setting $r.h.s.\leq\delta\Rightarrow m\geq (2p/\epsilon)\log[(3p-1)/\delta]$\\
+
+%\indent Again, the proof is constructed based on subintervals ($r_i$) on the left and right sides of the intervals, but we need to find optimal size for these intervals. \\
+%\indent Consider subinterval on the left and right of $R_1$ and $R_2$, call them $r_{ij}$ where subscript $i$ corresponds to the region it is a subset of, and subscript $j$ corresponds to $l=left$ or $r=right$. We would like to find a $t$ such that $Pr[r_{ij}]=t\epsilon$ and for $\Re[R_S]>\epsilon$, $R_S$ must either miss at least one of each of these such regions or it contains the false position region between the two target intervals (i.e. none of the sampled points labeled 0 is between the target intervals)\\
+%\indent Let the region between the two target intervals be called $R'$, and let $Pr[R']=u\epsilon$ for some yet to be determined $u$\\
 
 
 %\indent First we analyze constrains on the size of $R_1=[a,b]$ and $R_2=[c,d]$. \\
@@ -84,7 +118,7 @@ Without loss of generality, let $a<d$\\
 
 %WRONG DELETE The two regions are disjoin and there is a point labeled 0 between the two intervals. The analysis for this case will be very similar to the single interval case\\
 %\indent Denoting the two intervals as $R_1$ and $R_2$,the algorithm would again give the tightest interval that contains all points labeled as 1. And therefore $R_1\cup R_2 =R_S\subseteq R$ and if $Pr[R]<\epsilon\Rightarrow Pr[R_S]<\epsilon$\\
-%\indent Now consider subregions in each of the target intervals labeled as $r_{ij}$, where subscript $i$ represents the interval $R_i$ that it is a subset of, and subscript $j$refers to whether it is at the left ($l$) or right ($r$) of the respective intervals. Let us assign to each interval such that $Pr[r_{ij}]=\min(\epsilon/4, Pr[R_i]/2)+[(\epsilon/2-Pr[R_k])/2]_{Pr[R_k]<\epsilon/2}$ such that $\sum r_{ij} =\epsilon$\\
+%\indent Now consider subintervals in each of the target intervals labeled as $r_{ij}$, where subscript $i$ represents the interval $R_i$ that it is a subset of, and subscript $j$refers to whether it is at the left ($l$) or right ($r$) of the respective intervals. Let us assign to each interval such that $Pr[r_{ij}]=\min(\epsilon/4, Pr[R_i]/2)+[(\epsilon/2-Pr[R_k])/2]_{Pr[R_k]<\epsilon/2}$ such that $\sum r_{ij} =\epsilon$\\
 %\indent The first term of the expression would try to allocation $\epsilon/4$ to each of the regions, but if one of the intervals is less than that, it's probabilistic mass will be distributed to the other one. Notice based on construct, the total probabilty is greater than $\epsilon$ so both of them cannot be smaller than $\epsilon/2$\\
 
 
@@ -93,7 +127,7 @@ Without loss of generality, let $a<d$\\
 \subsection{}
 Consider the family of threshold functions $F=\{f:x\mapsto1_{x>\theta}:\theta\in\mathcal{R}\}$\\
 \indent This function will map all $x\leq\theta$ to 0 and all $x>\theta$ to 1\\
-\indent For a set of $m$ points, if $x_i/neq x_j$, $i\neq j$ then there are $m-1$ intervals between consecutive points when sorted, plus the two intervals to the left and right of all sampled points. For all values of $\theta$ in each such interval, the classification would be the same. If there are identical points in the sample, then the possible number of classifications is reduced by the number of such duplicated. \\
+\indent For a set of $m$ points, if $x_i\neq x_j$, $i\neq j$ then there are $m-1$ intervals between consecutive points when sorted, plus the two intervals to the left and right of all sampled points. For all values of $\theta$ in each such interval, the classification would be the same. If there are identical points in the sample, then the possible number of classifications is reduced by the number of such duplicated. \\
 \indent Therefore the maximum number of classification is $m+1$ for $F$\\
 \indent Similarly, for $G=\{g:x\mapsto 1_{x\leq \theta} : \theta\in\mathcal{R}\}$, there are $m-1$ intervals between sampled points if all of them are unique. And for the same value of $\theta$, $g$ would classify the points in the opposite way as $f$. Note, however, that the classification for $\theta$ greater or less than all the points have been already counted.\\
 \indent Therefore there are maximum of $m-1$ classifications for $G$ that are unique from $F$\\
