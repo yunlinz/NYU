@@ -1,0 +1,150 @@
+\documentclass[11pt, oneside]{amsart}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\renewcommand\thesection{\Alph{section}}
+%SetFonts
+
+%SetFonts
+
+
+\title{Homework 2}
+\author{Yunlin Zhang}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Problem A}
+\subsection{}
+
+\newpage
+\section{Problem B}
+\subsection{$\{X^+\cup \{x_{m+1}\},X^-\}$ and $\{X^+,X^-\cup \{x_{m+1}\}\}$ are both linearly separable dichotomies by hyperplanes going through the origin (A) iff $\{X^+,X^-\}$ is linearly separable by a hyperplane going through the origin and $x_{m+1}$ (B)}$\\$
+
+First, to show (A)$\Rightarrow$(B)\\
+(A)$\Rightarrow\exists\bold{w}_1$ at origin $\ s.t.\ \bold{w}_1\cdot\bold{x}^+>0\ \forall\bold{x}^+\in X^+\cup \{x_{m+1}\},\ \bold{w}_1\cdot \bold{x}^-<0 \ \forall\bold{x}^-\in X^-$\\
+\indent and\\
+\indent\indent $\exists\bold{w}_2$ at origin $\ s.t.\ \bold{w}_2\cdot\bold{x}^+>0\ \forall\bold{x}^+\in X^+,\ \bold{w}_2\cdot \bold{x}^- <0\ \forall\bold{x}^-\in X^- \cup \{x_{m+1}\}$\\
+Define the hyperplane defined by $\bold{w}_1$ as $U_1$ and by $\bold{w}_2$ as $U_2$\\
+
+Consider $f(\alpha)=[\alpha\bold{w}_1+(1-\alpha)\bold{w}_2]\cdot\bold{x}_{m+1},\ \alpha\in[0,1]$\\
+$f(\alpha)$ is a linear function of $\alpha$ therefore is continuous in $\alpha\in[0,1]$ and $f(0)<0$, $f(1)>0$, by intermediate value theorem $\exists\alpha'\in(0,1)\ s.t. \ f(\alpha')=0$\\
+$\Rightarrow \bold{y}=\alpha'\bold{w}_1+(1-\alpha')\bold{w}_2\ s.t. \ \bold{y}\cdot\bold{x}_{m+1}=0$\\
+$\Rightarrow\bold{y}$ is a normal vector that defines a hyperplane $U$ containing $\bold{x}_{m+1}$\\
+$\because \alpha',(1-\alpha')>0$\\
+$\bold{y}\cdot\bold{x}^+=\alpha'\bold{w}_1\cdot\bold{x}^++(1-\alpha')\bold{w}_2\cdot\bold{x}^+>0$, $\forall\bold{x}^+\in X^+$\\
+$\bold{y}\cdot\bold{x}^-=\alpha'\bold{w}_1\cdot\bold{x}^-+(1-\alpha')\bold{w}_2\cdot\bold{x}^-<0$, $\forall\bold{x}^-\in X^-$\\
+$\Rightarrow\{X^+,X^-\}$ is linearly separable by the hyperplane defined by $\bold{y}$\\
+
+By construction, since $\alpha'\in(0,1)$, $U$ must be between $U_1$ and $U_2$ \\
+By squeeze theorem $U_1$ and $U_2$ go through the origin$\Rightarrow U$ also goes through the origin\\
+$\Rightarrow\{X^+,X^-\}$ is a dichotomy that is linearly separable by a hyperplane that goes through the origin and $\bold{x}_{m+1}$. This completes the proof for (A)$\Rightarrow$(B)\\
+
+Now, to show (B)$\Rightarrow$(A)\\
+Consider the family of planes defined by the set of vectors $\{\bold{y}(\epsilon)=(1-\epsilon)\bold{w}+\epsilon\bold{x}_{m+1}:\epsilon\in (0,1]\}$\\ 
+Using this definition, \\
+\indent$\bold{y}\cdot\bold{x}_{m+1}=\epsilon||\bold{x}_{m+1}||^2>0$\\
+We'd want to find an $\epsilon$ where $\bold{y}\cdot\bold{x}>0,\ \forall \bold{x}\in X^+$ and $\bold{y}\cdot\bold{x}<0,\ \forall \bold{x}\in X^-$\\
+Denote any point in $X^+$ as $\bold{x}^+$ and in $X^-$ as $\bold{x}^-$:\\
+For points in $X^+$ to be correctly classified,\\
+\indent$\bold{y}\cdot\bold{x}^+=(1-\epsilon)\bold{w}\cdot\bold{x}^++\epsilon\bold{x}_{m+1}\cdot\bold{x}^+>0$\\
+\indent$\Leftrightarrow(1-\epsilon)\bold{w}\cdot\bold{x}^+>|\epsilon\bold{x}_{m+1}\cdot\bold{x}^+|$\\
+\indent$\Leftrightarrow(1-\epsilon)/\epsilon>|\bold{x}_{m+1}\cdot\bold{x}^+|/\bold{w}\cdot\bold{x}^+$\hfill$\because\epsilon>0,\ \bold{w}\cdot\bold{x}^+>0$\\
+\indent$\Leftrightarrow 1/\epsilon>|\bold{x}_{m+1}\cdot\bold{x}^+|/\bold{w}\cdot\bold{x}^++1$\\
+\indent$\Leftrightarrow \epsilon<[|\bold{x}_{m+1}\cdot\bold{x}^+|/\bold{w}\cdot\bold{x}^++1]^{-1}=\delta_1>0$\\
+\indent Choose $\delta_1'=\min_{\bold{x}^+}\delta_1$\\
+\indent$\therefore$ if $\epsilon<\delta_1'$ then all the points in $X^+$ will still be correctly classified\\
+Similarly, for points in $X^-$ to be correctly classified,\\
+\indent$\bold{y}\cdot\bold{x}^-=(1-\epsilon)\bold{w}\cdot\bold{x}^-+\epsilon\bold{x}_{m+1}\cdot\bold{x}^-<0$\\
+\indent$\Leftrightarrow (1-\epsilon)\bold{w}\cdot\bold{x}^-<-|\epsilon\bold{x}_{m+1}\cdot\bold{x}|$\\
+\indent$\Leftrightarrow (1-\epsilon)/\epsilon>-|\epsilon\bold{x}_{m+1}\cdot\bold{x}|/\bold{w}\cdot\bold{x}^-$\hfill$\because \bold{w}\cdot\bold{x}^-<0$\\
+\indent$\Leftrightarrow\epsilon< [-|\bold{x}_{m+1}\cdot\bold{x}^+|/\bold{w}\cdot\bold{x}^-+1]^{-1}=\delta_2>0$\\
+\indent Choose $\delta_2'=\min_{\bold{x}^-}\delta_2$\\
+\indent$\therefore$ if $\epsilon<\delta_2'$ then all the points in $X^-$ will still be correctly classified\\
+So if we choose some $\epsilon'<\min(\delta_1',\delta_2')\Rightarrow \\
+\indent\indent\bold{y}(\epsilon')\cdot\bold{x}>0\ \forall\bold{x}\in X^+\\
+\indent\indent\bold{y}(\epsilon')\cdot\bold{x}<0\ \forall\bold{x}\in X^-\\
+\indent\indent\bold{y}(\epsilon')\cdot\bold{x}_{m+1}>0
+$\\
+Therefore the dichotomy $\{X^+\cup \{\bold{x}_{m+1}\}, X^-\}$ is linearly separable by $\bold{y}(\epsilon')$\\
+
+Similar, to show that the dichotomy $\{X^+,X^-\cup\{\bold{x}_{m+1}\}$ is linearly separable, we use the family of planes defined by vectors in $\{\bold{z}(\epsilon)=(1-\epsilon)\bold{w}-\epsilon\bold{x}_{m+1}\:\epsilon\in (0,1]\}$\\
+\indent$\Rightarrow\bold{z}\cdot\bold{x}_{m+1}=-\epsilon||\bold{x}_{m+1}||^2<0$\\
+The conditions:\\
+\indent$\bold{z}\cdot\bold{x}^+=(1-\epsilon)\bold{w}\cdot\bold{x}^+-\epsilon\bold{x}_{m+1}\cdot\bold{x}^+>0$\\
+\indent and\\
+\indent$\bold{z}\cdot\bold{x}^-=(1-\epsilon)\bold{w}\cdot\bold{x}^--\epsilon\bold{x}_{m+1}\cdot\bold{x}^-<0$\\
+simplify to the same forms:\\
+\indent$(1-\epsilon)\bold{w}\cdot\bold{x}^+>|\epsilon\bold{x}_{m+1}\cdot\bold{x}^+|$\\
+\indent and \\
+\indent$(1-\epsilon)\bold{w}\cdot\bold{x}^-<-|\epsilon\bold{x}_{m+1}\cdot\bold{x}|$\\
+So we can choose the same $\epsilon'$ as defined in the previous part and the following conditions will hold:\\
+\indent\indent$\bold{z}(\epsilon')\cdot\bold{x}>0\ \forall\bold{x}\in X^+\\
+\indent\indent\bold{z}(\epsilon')\cdot\bold{x}<0\ \forall\bold{x}\in X^-\\
+\indent\indent\bold{z}(\epsilon')\cdot\bold{x}_{m+1}<0\\$
+Therefore the dichotomy $\{X^+\cup \{\bold{x}_{m+1}\}, X^-\}$ is linearly separable by $\bold{z}(\epsilon')$, and this completes the proof for (B)$\Rightarrow$(A)$\qed$\\
+
+\subsection{Let X=$\{\bold{x}_1,...,\bold{x}_m\}\subset\mathbb{R}^d\ s.t.$ any $d$-element subset of $X$ is linearly independent. Then the number of linearly separable labelings of $X$ is $C(m,d)=2\sum_{k=0}^{d-1}\binom{m-1}{k}$ }$\\$
+Following the proof for Sauer's Lemma\\
+\newpage
+\section{Problem C}
+
+\newpage
+\section{Problem D}
+\subsection{Show $K(\bold{x},\bold{y})=\sum_{i=1}^N\cos^n(x_i^2-y_i^2)\ \ \forall(\bold{x},\bold{y})\in \mathbb{R}^N\times\mathbb{R}^N$ is PDS}$\\$
+Using $\cos(\alpha-\beta)=\cos\alpha\cos\beta+\sin\alpha\sin\beta=
+\left[
+\begin{array}{c}
+\cos\alpha\\
+\sin\alpha\\
+\end{array}
+\right]
+\cdot
+\left[
+\begin{array}{c}
+\cos\beta\\
+\sin\beta\\
+\end{array}
+\right]
+$\\
+Let $\Phi_i(\bold{x})=
+\left[
+\begin{array}{c}
+\cos x_i^2\\
+\sin x_i^2\\
+\end{array}
+\right]$ and $K_i(\bold{x},\bold{y})=\Phi_i(\bold{x})\cdot\Phi_i(\bold{y})$ is PDS\\
+$K(\bold{x},\bold{y})=\sum_{i=1}^N [K_i(\bold{x},\bold{y})]^n\Rightarrow K(\bold{x},\bold{y})$ is PDS by closure of PDS kernels.$\qed$
+$\\$
+\subsection{Show $K(\bold{x},\bold{y})=\exp(-||\bold{x}-\bold{y}||/\sigma)\ \ \forall(\bold{x},\bold{y})\in \mathbb{R}^N\times\mathbb{R}^N$ is PDS}$\\$
+Consider if $\sum_{i=1}^mc_i=0$,\\
+$\sum_{i,j=1}^m c_i c_j ||\bold{x}_i-\bold{x}_j||=\sum_{i,j}^m c_i c_j \sqrt{(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)}$\\
+Case 1: $(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)\leq1$\\
+$\sum_{i,j=1}^m c_i c_j ||\bold{x}_i-\bold{x}_j||=\sum_{i,j} c_i c_j \sqrt{(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)}$\\
+\indent$\leq\sum_{i,j}c_i c_j=\sum_i c_i\sum_j c_j=0$\\
+Case 2: $(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)>1\Rightarrow\sqrt{(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)}\leq(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)$\\
+$\sum_{i,j=1}^m c_i c_j ||\bold{x}_i-\bold{x}_j||=\sum_{i,j} c_i c_j \sqrt{(\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)}$\\
+\indent$\leq\sum_{i,j} c_i c_j (\bold{x}_i-\bold{x}_j)\cdot(\bold{x}_i-\bold{x}_j)$\\
+\indent$=\sum_{i,j} c_i c_j (||\bold{x}_i||^2+||\bold{x}_j||^2-2\bold{x}_i\cdot\bold{x}_j)$\\
+\indent$=\sum_{i,j} c_i c_j (||\bold{x}_i||^2+||\bold{x}_j||^2)-2\sum_{i,j} c_i c_j (\bold{x}_i\cdot\bold{x}_j)$\\
+\indent$=\sum_{i,j} c_i c_j (||\bold{x}_i||^2+||\bold{x}_j||^2)-2\sum_{i} c_i \bold{x}_i\cdot\sum_{j}c_j \bold{x}_j$\\
+\indent$=\sum_{i,j} c_i c_j (||\bold{x}_i||^2+||\bold{x}_j||^2)-2||\sum_{i} c_i \bold{x}_i||^2$\\
+\indent$\leq\sum_{i,j} c_i c_j (||\bold{x}_i||^2+||\bold{x}_j||^2)$\\
+\indent$=\sum_i c_i\sum_j c_j||\bold{x}_j||^2+\sum_j c_j \sum_i c_i||\bold{x}_i||^2=0$\hfill$\because\sum_i c_i=0$\\
+$\Rightarrow\sum_{i,j=1}^m c_i c_j ||\bold{x}_i-\bold{x}_j||\leq0,\ \forall(\bold{x}_i,\bold{x}_j)\in \mathbb{R}^N\times\mathbb{R}^N$\\
+$\Rightarrow\ K_0(\bold{x},\bold{y})=||\bold{x}-\bold{y}||$ is an NDS kernel as defined in textbook.\\
+$\Rightarrow\ K(\bold{x},\bold{y})=\exp(-K_0/\sigma)$, and $1/\sigma>0\Rightarrow K(\bold{x},\bold{y})$ is PDS.$\qed$\\
+
+
+
+
+
+
+
+
+
+\end{document}  
