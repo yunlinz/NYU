@@ -19,7 +19,27 @@
 \begin{document}
 \maketitle
 \section{Problem A}
-\subsection{}
+\subsection{VC-dimension of convex combinations}$\\$
+
+$\mathcal{F}=\{\text{sgn}(\sum\limits_{t=1}^T \alpha_t h_t):h_t\in H,\alpha_t\geq0,\sum\limits_{i=1}^T\alpha_t\leq1\}$\\
+
+Let $\text{VCdim(H)}=d$, and the VC-dimension of set of linear threshold functions in $\mathbb{R}^T$ is $T+1$.\\
+
+$\mathcal{F}$ is like a neural network with 1 hidden layer of concept class $H$. Therefore,\\
+Let $d=\sum_{t=1}^T \text{VCdim}_t(m)+\text{VCdim}_\text{linear}(m)=dT+T+1<(T+1)(d+1)$ and there are T+1 nodes in this set up.\\
+
+Using theorem 1 from Baum and Haussler$^{[1]}$, where $d=(d+1)(T+1)$, $N=T+1$\\
+
+$\Pi_\mathcal{F}(m)\leq[\frac{(T+1)em}{(d+1)(T+1)}]^{(d+1)(T+1)}<2^m$, the last relationship is based on the assumption of finite VC-dimension for $\mathcal{F}\Rightarrow\text{VCdim}(\mathcal{F})\leq\min\{m:\Pi_\mathcal{F}(m)<2^m\}$\\ 
+\indent $\indent\ [\frac{(T+1)em}{(d+1)(T+1)}]^{(d+1)(T+1)}<2^m$\\
+\indent $\Leftrightarrow (d+1)(T+1)\log_2[\frac{(T+1)em}{(d+1)(T+1)}]<m$\\
+Using the hint from 2014, setting $x=(d+1)(T+1)$ and $y=(T+1)e/[(d+1)(T+1)]$\\
+\indent $\Leftrightarrow m=2(d+1)(T+1)\log_2[(T+1)e]\geq 1,\ xy=(T+1)e>4,\ x,y>0,\ \text{and}\ m\geq 1$ and the inequality is satisfied.\\
+\indent $\Rightarrow \text{VCdim}(\mathcal{F})\leq m=2(d+1)(T+1)\log_2[(T+1)e]\qed$\\
+
+Reference:  \\
+1. E. B. Baum and D. Haussler, What size net gives valid generalization?, Adv. Neural Inform. Process. Systems I, pp. 8190, Morgan Kaufmann,1989.\\
+2. Yoav Freund and Robert E. Schapire. A decision-theoretic generalization of on-line learning and an application to boosting. Journal of Computer and System Sciences, 55(1):119-139, 1997. 
 
 \newpage
 \section{Problem B}
@@ -89,7 +109,38 @@ So we can choose the same $\epsilon'$ as defined in the previous part and the fo
 Therefore the dichotomy $\{X^+\cup \{\bold{x}_{m+1}\}, X^-\}$ is linearly separable by $\bold{z}(\epsilon')$, and this completes the proof for (B)$\Rightarrow$(A)$\qed$\\
 
 \subsection{Let X=$\{\bold{x}_1,...,\bold{x}_m\}\subset\mathbb{R}^d\ s.t.$ any $d$-element subset of $X$ is linearly independent. Then the number of linearly separable labelings of $X$ is $C(m,d)=2\sum_{k=0}^{d-1}\binom{m-1}{k}$ }$\\$
-Following the proof for Sauer's Lemma\\
+The proof is by complete induction on $m+d$ and follow very closely to that of Sauer's lemma.\\
+
+Base case: \\
+\indent For any $m$, $d=1$\\
+$C(m,1) = 2\binom{m-1}{0} = 2$, which is to say the data points in $\mathbb{R}$ are degenerate and can only be labeled all +1 or all -1\\
+\indent For and $d$, $m=1$\\
+$C(1,d) = 2\binom{0}{0} = 2$, for any dimension d, if there is only 1 point there can only be 2 ways of labeling it.\\
+
+Inductive case: Assume all $m'+d'<m+d$ true. 
+
+Let the set of all linearly separable labelings of $X=\{\bold{x}_1,...,\bold{x}_{m-1}\}$ be $G$ and $|G|=C(m,d)$. Let $T=\{\bold{x}_1,...,\bold{x}_{m-1}\}$ and denote the set of linearly separable labelings of this as $G_T$. 
+
+Construct set $G_2=\{g'\subseteq T:(g'\in G)\land(g'\cup\{\bold{x}_m\}\in G)\}$. This is the set where each labeling is in the overall set $G$ but not in $G_T$. Specifically, if $U\subseteq T$ where $|U|=d-1$ such that $U\cup\{\bold{x}_m\}$ admits only 1 possible labeling for $\bold{x}_m$ then this particular $g'$ is in $G_T$, otherwise if both labeling are possible, then $g'$ will be in both $G_T$ and $G_2$. Using this definition, $|G|=|G_T|+|G_2|$.
+
+Now we need to find $|G_T|$ and $|G_2|$. For any labeling of $X=\{\bold{x}_1,...,\bold{x}_m\}$, the labeling for any $m-1$ elements must be in $G_T$, and the maximum number of linearly separable points in $G_T$ is still $d\Rightarrow|G_T|=C(m-1,d)$
+
+And for any labeling of $U$, a $d-1$ element subset of $X$, to be in $G_2$, both possible labeling for $\bold{x}_m\in T\cup\{ \bold{x}_m\}$ must be in $G\Rightarrow$ the maximum number of linearly separable points in $G_2$ must be $d-1\Rightarrow |G_2|=C(m-1,d-1)$\\
+Using the following properties:\\
+\indent $\binom{m}{k}=\binom{m-1}{k}+\binom{m-1}{k-1}$\\
+Using the induction hypothesis:\\
+$C(m,d)=C(m-1,d)+C(m-1,d-1)=2\sum_{k=0}^{d-1}\binom{m-2}{k}+2\sum_{k=0}^{d-2}\binom{m-2}{k}$\\
+\indent\indent\indent $=2\sum_{k=0}^{d-1}[\binom{m-2}{k}+\binom{m-2}{k-1}]$\\
+\indent\indent\indent $=2\sum_{k=0}^{d-1}\binom{m-1}{k}$\\
+which completes the proof $\qed$\\
+
+\subsection{Growth function of linear combination of linearly independent variable}$\\$
+\indent $\mathcal{F}=\{x\mapsto\text{sgn}(\sum\limits_{k=1}^p a_k f_k(x)):a_1,...,a_p\in\mathbb{R}\}$\\
+Using results from the previous part, let $U=\{\Phi(x_1),...,\Phi(x_m)\}$ where every $p$-subset is linearly independent. Then the total number of linearly separable labeling of $U$ is $2\sum_{i=1}^{p-1}\binom{m-1}{i}\Rightarrow\Pi_\mathcal{F}(m)\leq 2\sum_{i=1}^{p-1}\binom{m-1}{i}$. We need to show that this relationship is strictly equal\\
+
+By definition, since any $p$-element subset of $U$ is linearly independent, for any such subset, $\exists \bold{a} \in\mathbb{R}^p$, choose this $\bold{a}$ to plug into the definition of $\mathcal{F}$ and we will be able to attain any combination labeling of $U$, and therefore all labelings of $U$ are possible using $\mathcal{F}$ and the equality is satisfied.$\qed$
+
+
 \newpage
 \section{Problem C}
 
